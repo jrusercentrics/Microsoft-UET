@@ -15,13 +15,14 @@
       'ad_storage': 'denied'
     });
 
-    // Cookiebot pushes updates automatically.
+    // Updates are pushed automatically by Cookiebot.
     // Listener is optional, included here as safeguard.
     window.addEventListener('CookiebotOnConsentReady', function() {
       window.uetq.push('consent', 'update', {
         'ad_storage': Cookiebot.consent.marketing ? 'granted' : 'denied'
       });
       console.log("Consent updated:", Cookiebot.consent.marketing);
+      console.log("enableAdStorage:", window.uetq.uetConfig.enableAdStorage);
     });
   </script>
 
@@ -35,6 +36,7 @@
         o.q=w[u];
         w[u]=new UET(o);
         w[u].push("pageLoad");
+        console.log("Initial enableAdStorage:", w[u].uetConfig.enableAdStorage);
       };
       n=d.createElement(t);
       n.src=r;
@@ -59,33 +61,28 @@
     <li>Cookiebot CMP (blocking mode = auto).</li>
     <li>Manual <code>consent default</code> set to <code>denied</code> before user action.</li>
     <li>Automatic updates from Cookiebot to Microsoft UET (<code>window.uetq</code>).</li>
-    <li>Optional <code>CookiebotOnConsentReady</code> listener as safeguard.</li>
   </ul>
 
   <h2>How to test</h2>
   <ol>
     <li>Open the browser developer console (<kbd>F12</kbd>).</li>
-    <li>Before accepting cookies, run:
-      <pre>window.uetq?.uetConfig?.enableAdStorage</pre>
+    <li>Before accepting cookies, run:<br>
+      <pre>window.uetq.uetConfig.enableAdStorage</pre>
       It should return <code>false</code>.
     </li>
-    <li>Accept marketing cookies in the Cookiebot banner, then run again:
-      <pre>window.uetq?.uetConfig?.enableAdStorage</pre>
+    <li>Accept marketing cookies in the Cookiebot banner, then run again:<br>
+      <pre>window.uetq.uetConfig.enableAdStorage</pre>
       It should return <code>true</code>.
     </li>
-    <li>Reject marketing cookies, then run again:
-      <pre>window.uetq?.uetConfig?.enableAdStorage</pre>
+    <li>Reject marketing cookies, then run again:<br>
+      <pre>window.uetq.uetConfig.enableAdStorage</pre>
       It should return <code>false</code>.
-    </li>
-    <li>You can also inspect what has been pushed to the queue:
-      <pre>window.uetq.filter(e => e[0] === "consent")</pre>
     </li>
   </ol>
 
-  <p>This demonstrates the difference between:</p>
-  <ul>
-    <li><strong>Default</strong> (must be set manually).</li>
-    <li><strong>Updates</strong> (automatically pushed by Cookiebot).</li>
-  </ul>
+  <p>
+    <strong>Note:</strong> The <code>uetConfig.enableAdStorage</code> value is the authoritative state
+    that Microsoft UET uses internally, and is the best way to verify correct Consent Mode behavior.
+  </p>
 </body>
 </html>
