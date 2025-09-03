@@ -2,27 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Test UET + Cookiebot</title>
+  <title>Teste Cookiebot + Microsoft UET</title>
 
   <!-- Cookiebot CMP -->
-  <script
-    id="Cookiebot"
-    src="https://consent.cookiebot.com/uc.js"
-    data-cbid="YOUR-COOKIEBOT-ID-HERE"
-    data-blockingmode="auto"
-    type="text/javascript">
-  </script>
+  <script id="Cookiebot"
+          src="https://consent.cookiebot.com/uc.js"
+          data-cbid="e2769309-3672-42d4-bc3f-d56333e6a880"
+          data-blockingmode="auto"
+          type="text/javascript"></script>
 
   <!-- Consent Mode for Microsoft UET -->
   <script>
     window.uetq = window.uetq || [];
 
-    // Default state (important!)
+    // Definir default sempre como denied (antes de consentimento)
     window.uetq.push('consent', 'default', {
       'ad_storage': 'denied'
     });
 
-    // Updates (automatic, but listener helps in some setups)
+    // Cookiebot envia updates automaticamente, mas reforçamos
     window.addEventListener('CookiebotOnConsentReady', function() {
       window.uetq.push('consent', 'update', {
         'ad_storage': Cookiebot.consent.marketing ? 'granted' : 'denied'
@@ -37,7 +35,7 @@
       var f,n,i;
       w[u]=w[u]||[];
       f=function(){
-        var o={ti:"YOUR-UET-TAG-ID-HERE"};
+        var o={ti:"97203970", enableAutoSpaTracking: true};
         o.q=w[u];
         w[u]=new UET(o);
         w[u].push("pageLoad");
@@ -56,15 +54,9 @@
       i.parentNode.insertBefore(n,i);
     })(window,document,"script","//bat.bing.com/bat.js","uetq");
   </script>
-  <noscript>
-    <img src="//bat.bing.com/action/0?ti=YOUR-UET-TAG-ID-HERE&Ver=2"
-         height="0" width="0"
-         style="display:none; visibility:hidden;" />
-  </noscript>
 </head>
 <body>
-  <h1>Microsoft UET + Cookiebot Test Page</h1>
-  <p>Use the Cookiebot banner to give or deny marketing consent.  
-     Check <code>window.uetq</code> in the browser console.</p>
+  <h1>Teste Microsoft UET + Cookiebot</h1>
+  <p>Abre a consola do browser (<kbd>F12</kbd>) e verifica o <code>window.uetq</code> antes e depois de aceitar/rejeitar marketing cookies no banner do Cookiebot.</p>
 </body>
 </html>
