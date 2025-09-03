@@ -2,31 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Teste Cookiebot + Microsoft UET</title>
+  <title>Test UET + Cookiebot (current docs)</title>
 
   <!-- Cookiebot CMP -->
   <script id="Cookiebot"
           src="https://consent.cookiebot.com/uc.js"
           data-cbid="e2769309-3672-42d4-bc3f-d56333e6a880"
           data-blockingmode="auto"
-          type="text/javascript"></script>
-
-  <!-- Consent Mode for Microsoft UET -->
-  <script>
-    window.uetq = window.uetq || [];
-
-    // Definir default sempre como denied (antes de consentimento)
-    window.uetq.push('consent', 'default', {
-      'ad_storage': 'denied'
-    });
-
-    // Cookiebot envia updates automaticamente, mas reforçamos
-    window.addEventListener('CookiebotOnConsentReady', function() {
-      window.uetq.push('consent', 'update', {
-        'ad_storage': Cookiebot.consent.marketing ? 'granted' : 'denied'
-      });
-      console.log("Consent updated:", Cookiebot.consent.marketing);
-    });
+          type="text/javascript">
   </script>
 
   <!-- Microsoft UET Tag -->
@@ -56,7 +39,9 @@
   </script>
 </head>
 <body>
-  <h1>Teste Microsoft UET + Cookiebot</h1>
-  <p>Abre a consola do browser (<kbd>F12</kbd>) e verifica o <code>window.uetq</code> antes e depois de aceitar/rejeitar marketing cookies no banner do Cookiebot.</p>
+  <h1>Test – Current Documentation</h1>
+  <p>Open the browser console (F12) and run:</p>
+  <pre>window.uetq.uetConfig.enableAdStorage</pre>
+  <p>You will likely see <code>true</code> even before consent is given.</p>
 </body>
 </html>
