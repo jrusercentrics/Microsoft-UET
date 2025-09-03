@@ -2,42 +2,90 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Test UET + Cookiebot via GTM (old docs)</title>
+  <title>Test Microsoft UET Consent Mode + Cookiebot</title>
 
-  <!-- Google Tag Manager -->
+  <!-- Cookiebot CMP -->
+  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="e2769309-3672-42d4-bc3f-d56333e6a880" data-blockingmode="auto" type="text/javascript"></script>
+
+  <!-- Microsoft UET Consent Mode default + update -->
   <script>
-  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-WB52WTHD');
+    window.uetq = window.uetq || [];
+    // Always set a safe default before user action
+    window.uetq.push('consent', 'default', {
+      'ad_storage': 'denied'
+    });
+
+    // Cookiebot pushes updates automatically.
+    // Listener is optional, included here as safeguard.
+    window.addEventListener('CookiebotOnConsentReady', function() {
+      window.uetq.push('consent', 'update', {
+        'ad_storage': Cookiebot.consent.marketing ? 'granted' : 'denied'
+      });
+      console.log("Consent updated:", Cookiebot.consent.marketing);
+    });
   </script>
-  <!-- End Google Tag Manager -->
+
+  <!-- Microsoft UET Tag -->
+  <script>
+    (function(w,d,t,r,u){
+      var f,n,i;
+      w[u]=w[u]||[];
+      f=function(){
+        var o={ti:"97203970", enableAutoSpaTracking: true};
+        o.q=w[u];
+        w[u]=new UET(o);
+        w[u].push("pageLoad");
+      };
+      n=d.createElement(t);
+      n.src=r;
+      n.async=1;
+      n.onload=n.onreadystatechange=function(){
+        var s=this.readyState;
+        if(!s||s==="loaded"||s==="complete"){
+          f();
+          n.onload=n.onreadystatechange=null;
+        }
+      };
+      i=d.getElementsByTagName(t)[0];
+      i.parentNode.insertBefore(n,i);
+    })(window,document,"script","//bat.bing.com/bat.js","uetq");
+  </script>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript>
-    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WB52WTHD"
-            height="0" width="0"
-            style="display:none;visibility:hidden"></iframe>
-  </noscript>
-  <!-- End Google Tag Manager (noscript) -->
+  <h1>Microsoft UET + Cookiebot Consent Mode Test</h1>
 
-  <h1>Test – GTM Old Documentation Setup</h1>
-  <p>
-    In GTM, add two tags:
-    <ol>
-      <li><strong>Cookiebot CMP</strong> (Custom HTML tag with your Cookiebot script, blocking mode = auto).</li>
-      <li><strong>Microsoft UET</strong> (using GTM’s built-in UET template, with your tag ID).</li>
-    </ol>
-  </p>
-  <p>
-    Then open the browser console (<kbd>F12</kbd>) and run:
-    <pre>window.uetq?.uetConfig?.enableAdStorage</pre>
-    <ul>
-      <li><strong>Before consent</strong>: you may see <code>true</code> (granted by default) or nothing if Cookiebot blocks UET.</li>
-      <li><strong>After accepting/rejecting marketing</strong>: Cookiebot should push an update.</li>
-    </ul>
-  </p>
+  <p>This page implements:</p>
+  <ul>
+    <li>Cookiebot CMP (blocking mode = auto).</li>
+    <li>Manual <code>consent default</code> set to <code>denied</code> before user action.</li>
+    <li>Automatic updates from Cookiebot to Microsoft UET (<code>window.uetq</code>).</li>
+    <li>Optional <code>CookiebotOnConsentReady</code> listener as safeguard.</li>
+  </ul>
+
+  <h2>How to test</h2>
+  <ol>
+    <li>Open the browser developer console (<kbd>F12</kbd>).</li>
+    <li>Before accepting cookies, run:
+      <pre>window.uetq?.uetConfig?.enableAdStorage</pre>
+      It should return <code>false</code>.
+    </li>
+    <li>Accept marketing cookies in the Cookiebot banner, then run again:
+      <pre>window.uetq?.uetConfig?.enableAdStorage</pre>
+      It should return <code>true</code>.
+    </li>
+    <li>Reject marketing cookies, then run again:
+      <pre>window.uetq?.uetConfig?.enableAdStorage</pre>
+      It should return <code>false</code>.
+    </li>
+    <li>You can also inspect what has been pushed to the queue:
+      <pre>window.uetq.filter(e => e[0] === "consent")</pre>
+    </li>
+  </ol>
+
+  <p>This demonstrates the difference between:</p>
+  <ul>
+    <li><strong>Default</strong> (must be set manually).</li>
+    <li><strong>Updates</strong> (automatically pushed by Cookiebot).</li>
+  </ul>
 </body>
 </html>
