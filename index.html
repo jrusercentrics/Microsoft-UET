@@ -2,46 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Test UET + Cookiebot (current docs)</title>
+  <title>Test UET + Cookiebot via GTM (old docs)</title>
 
-  <!-- Cookiebot CMP -->
-  <script id="Cookiebot"
-          src="https://consent.cookiebot.com/uc.js"
-          data-cbid="e2769309-3672-42d4-bc3f-d56333e6a880"
-          data-blockingmode="auto"
-          type="text/javascript">
-  </script>
-
-  <!-- Microsoft UET Tag -->
+  <!-- Google Tag Manager -->
   <script>
-    (function(w,d,t,r,u){
-      var f,n,i;
-      w[u]=w[u]||[];
-      f=function(){
-        var o={ti:"97203970", enableAutoSpaTracking: true};
-        o.q=w[u];
-        w[u]=new UET(o);
-        w[u].push("pageLoad");
-      };
-      n=d.createElement(t);
-      n.src=r;
-      n.async=1;
-      n.onload=n.onreadystatechange=function(){
-        var s=this.readyState;
-        if(!s||s==="loaded"||s==="complete"){
-          f();
-          n.onload=n.onreadystatechange=null;
-        }
-      };
-      i=d.getElementsByTagName(t)[0];
-      i.parentNode.insertBefore(n,i);
-    })(window,document,"script","//bat.bing.com/bat.js","uetq");
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-WB52WTHD');
   </script>
+  <!-- End Google Tag Manager -->
 </head>
 <body>
-  <h1>Test – Current Documentation</h1>
-  <p>Open the browser console (F12) and run:</p>
-  <pre>window.uetq.uetConfig.enableAdStorage</pre>
-  <p>You will likely see <code>true</code> even before consent is given.</p>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WB52WTHD"
+            height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <h1>Test – GTM Old Documentation Setup</h1>
+  <p>
+    In GTM, add two tags:
+    <ol>
+      <li><strong>Cookiebot CMP</strong> (Custom HTML tag with your Cookiebot script, blocking mode = auto).</li>
+      <li><strong>Microsoft UET</strong> (using GTM’s built-in UET template, with your tag ID).</li>
+    </ol>
+  </p>
+  <p>
+    Then open the browser console (<kbd>F12</kbd>) and run:
+    <pre>window.uetq?.uetConfig?.enableAdStorage</pre>
+    <ul>
+      <li><strong>Before consent</strong>: you may see <code>true</code> (granted by default) or nothing if Cookiebot blocks UET.</li>
+      <li><strong>After accepting/rejecting marketing</strong>: Cookiebot should push an update.</li>
+    </ul>
+  </p>
 </body>
 </html>
