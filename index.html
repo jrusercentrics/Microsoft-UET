@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test UET + Cookiebot</title>
+
+  <!-- Cookiebot CMP -->
+  <script
+    id="Cookiebot"
+    src="https://consent.cookiebot.com/uc.js"
+    data-cbid="YOUR-COOKIEBOT-ID-HERE"
+    data-blockingmode="auto"
+    type="text/javascript">
+  </script>
+
+  <!-- Consent Mode for Microsoft UET -->
+  <script>
+    window.uetq = window.uetq || [];
+
+    // Default state (important!)
+    window.uetq.push('consent', 'default', {
+      'ad_storage': 'denied'
+    });
+
+    // Updates (automatic, but listener helps in some setups)
+    window.addEventListener('CookiebotOnConsentReady', function() {
+      window.uetq.push('consent', 'update', {
+        'ad_storage': Cookiebot.consent.marketing ? 'granted' : 'denied'
+      });
+      console.log("Consent updated:", Cookiebot.consent.marketing);
+    });
+  </script>
+
+  <!-- Microsoft UET Tag -->
+  <script>
+    (function(w,d,t,r,u){
+      var f,n,i;
+      w[u]=w[u]||[];
+      f=function(){
+        var o={ti:"YOUR-UET-TAG-ID-HERE"};
+        o.q=w[u];
+        w[u]=new UET(o);
+        w[u].push("pageLoad");
+      };
+      n=d.createElement(t);
+      n.src=r;
+      n.async=1;
+      n.onload=n.onreadystatechange=function(){
+        var s=this.readyState;
+        if(!s||s==="loaded"||s==="complete"){
+          f();
+          n.onload=n.onreadystatechange=null;
+        }
+      };
+      i=d.getElementsByTagName(t)[0];
+      i.parentNode.insertBefore(n,i);
+    })(window,document,"script","//bat.bing.com/bat.js","uetq");
+  </script>
+  <noscript>
+    <img src="//bat.bing.com/action/0?ti=YOUR-UET-TAG-ID-HERE&Ver=2"
+         height="0" width="0"
+         style="display:none; visibility:hidden;" />
+  </noscript>
+</head>
+<body>
+  <h1>Microsoft UET + Cookiebot Test Page</h1>
+  <p>Use the Cookiebot banner to give or deny marketing consent.  
+     Check <code>window.uetq</code> in the browser console.</p>
+</body>
+</html>
